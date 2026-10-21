@@ -1,0 +1,19 @@
+# Arquivos de compilação
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.o
+*.obj
+*.exe
+*.dll
+*.a
+*.lib
+*.gcda
+*.gcno
+
+# Configurações locais
+.qtcreator/
+.vscode/
