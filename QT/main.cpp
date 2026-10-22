@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "loginwindow.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    MainWindow w;
-    w.show();
+    LoginWindow l;
+    l.show();
     return QApplication::exec();
 }

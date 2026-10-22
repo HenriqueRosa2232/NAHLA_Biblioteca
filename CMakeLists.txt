@@ -10,34 +10,39 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Sql) #add sql aqui
 
 set(TS_FILES NAHLA_Biblioteca_pt_BR.ts)
 
 set(PROJECT_SOURCES
-    main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
+    QT/main.cpp
+    QT/mainwindow.cpp
+    QT/mainwindow.h
+    QT/mainwindow.ui
+    QT/loginwindow.cpp
+    QT/loginwindow.h
+    QT/loginwindow.ui
     ${TS_FILES}
 
     # Implementacoes do sistema original
-    src/Aluno.cpp
-    src/Acervo_Livro.cpp
-    src/Acervo_Pessoas.cpp
-    src/Bibliotecario.cpp
-    src/Funcionario.cpp
-    src/Gerenciador_Emprestimo.cpp
-    src/Gerenciador_Pedidos.cpp
-    src/Livro.cpp
-    src/Usuario.cpp
-    src/Validador.cpp
+    #src/Aluno.cpp
+    #src/Acervo_Livro.cpp
+    #src/Acervo_Pessoas.cpp
+    #src/Bibliotecario.cpp
+    #src/Funcionario.cpp
+    #src/Gerenciador_Emprestimo.cpp
+    #src/Gerenciador_Pedidos.cpp
+    #src/Livro.cpp
+    #src/Usuario.cpp
+    #src/Validador.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(NAHLA_Biblioteca
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        QT/form.h QT/form.cpp QT/form.ui
+        QT/loginwindow.h QT/loginwindow.cpp QT/loginwindow.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET NAHLA_Biblioteca APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -68,6 +73,7 @@ target_include_directories(NAHLA_Biblioteca PRIVATE
 target_link_libraries(NAHLA_Biblioteca
 PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Sql #add sql aqui
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
