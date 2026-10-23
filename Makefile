@@ -16,6 +16,18 @@ UIC = $(QT_HOST_BINS)/uic
 MOC = $(QT_HOST_BINS)/moc
 
 # ==========================
+# DEPENDENCIAS
+# ==========================
+.PHONY: all dependencias compilar run clean
+
+all: dependencias
+	$(MAKE) compilar
+
+dependencias:
+	sudo apt update
+	sudo apt install build-essential pkg-config qt6-base-dev qt6-base-dev-tools
+
+# ==========================
 # DIRETORIOS
 # ==========================
 QT_DIR = ./QT
