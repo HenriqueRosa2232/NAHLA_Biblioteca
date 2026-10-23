@@ -11,9 +11,8 @@ QT_PACKAGES = Qt6Widgets Qt6Sql
 QT_CFLAGS = $(shell $(PKG_CONFIG) --cflags $(QT_PACKAGES))
 QT_LIBS = $(shell $(PKG_CONFIG) --libs $(QT_PACKAGES))
 
-QT_HOST_BINS = $(shell qmake6 -query QT_HOST_BINS 2>/dev/null)
-UIC = $(QT_HOST_BINS)/uic
-MOC = $(QT_HOST_BINS)/moc
+UIC = $(shell command -v uic 2>/dev/null || find /usr/lib/qt6 -type f -name uic 2>/dev/null | head -n 1)
+MOC = $(shell command -v moc 2>/dev/null || find /usr/lib/qt6 -type f -name moc 2>/dev/null | head -n 1)
 
 # ==========================
 # DEPENDENCIAS
