@@ -5,14 +5,7 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -fPIC
 
-PKG_CONFIG = pkg-config
 QT_PACKAGES = Qt6Widgets Qt6Sql
-
-QT_CFLAGS = $(shell $(PKG_CONFIG) --cflags $(QT_PACKAGES))
-QT_LIBS = $(shell $(PKG_CONFIG) --libs $(QT_PACKAGES))
-
-UIC = $(shell command -v uic 2>/dev/null || find /usr/lib/qt6 -type f -name uic 2>/dev/null | head -n 1)
-MOC = $(shell command -v moc 2>/dev/null || find /usr/lib/qt6 -type f -name moc 2>/dev/null | head -n 1)
 
 # ==========================
 # DEPENDENCIAS
@@ -24,7 +17,7 @@ all: dependencias
 
 dependencias:
 	sudo apt update
-	sudo apt install build-essential pkg-config qt6-base-dev qt6-base-dev-tools
+	sudo apt install -y build-essential pkg-config qt6-base-dev qt6-base-dev-tools
 
 # ==========================
 # DIRETORIOS
@@ -32,10 +25,16 @@ dependencias:
 QT_DIR = ./QT
 BUILD_DIR = ./build-qt
 
+QT_CFLAGS = $(shell pkg-config --cflags $(QT_PACKAGES))
+QT_LIBS = $(shell pkg-config --libs $(QT_PACKAGES))
+
+UIC = $(shell command -v uic 2>/dev/null || find /usr/lib/qt6 -type f -name uic 2>/dev/null | head -n 1)
+MOC = $(shell command -v moc 2>/dev/null || find /usr/lib/qt6 -type f -name moc 2>/dev/null | head -n 1)
+
 CXXFLAGS += $(QT_CFLAGS) -I$(QT_DIR) -I$(BUILD_DIR)
 
 # ==========================
-# OBJETOS
+# ARQUIVOS OBJETO
 # ==========================
 OBJ = $(BUILD_DIR)/main.o \
       $(BUILD_DIR)/loginwindow.o \
@@ -46,17 +45,13 @@ OBJ = $(BUILD_DIR)/main.o \
       $(BUILD_DIR)/moc_form.o
 
 # ==========================
-# COMPILACAO PRINCIPAL
+# DIRETORIO DE BUILD
 # ==========================
-.PHONY: all run clean
-
-all: NAHLA_Biblioteca
-
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
 # ==========================
-# GERACAO DAS INTERFACES
+# INTERFACES DO QT
 # ==========================
 $(BUILD_DIR)/ui_%.h: $(QT_DIR)/%.ui | $(BUILD_DIR)
 	$(UIC) $< -o $@
@@ -66,16 +61,16 @@ $(BUILD_DIR)/mainwindow.o: $(BUILD_DIR)/ui_mainwindow.h
 $(BUILD_DIR)/form.o: $(BUILD_DIR)/ui_form.h
 
 # ==========================
-# GERACAO DO CODIGO DO MOC
+# CODIGO AUXILIAR DO QT
 # ==========================
 $(BUILD_DIR)/moc_%.cpp: $(QT_DIR)/%.h | $(BUILD_DIR)
-	$(MOC) $(QT_CFLAGS) $< -o $@
+	$(MOC) $< -o $@
 
 $(BUILD_DIR)/moc_%.o: $(BUILD_DIR)/moc_%.cpp
 	$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
 
 # ==========================
-# COMPILACAO DOS .CPP
+# COMPILACAO
 # ==========================
 $(BUILD_DIR)/%.o: $(QT_DIR)/%.cpp | $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
@@ -83,10 +78,12 @@ $(BUILD_DIR)/%.o: $(QT_DIR)/%.cpp | $(BUILD_DIR)
 -include $(OBJ:.o=.d)
 
 # ==========================
-# LINKEDICAO
+# EXECUTAVEL
 # ==========================
 NAHLA_Biblioteca: $(OBJ)
 	$(CXX) $(OBJ) -o $@ $(QT_LIBS)
+
+compilar: NAHLA_Biblioteca
 
 # ==========================
 # EXECUCAO
