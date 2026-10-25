@@ -5,7 +5,7 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wextra -fPIC
 
-QT_PACKAGES = Qt6Widgets Qt6Sql
+QT_PACKAGES = Qt5Widgets Qt5Sql
 
 # ==========================
 # DEPENDENCIAS
@@ -17,7 +17,7 @@ all: dependencias
 
 dependencias:
 	sudo apt update
-	sudo apt install -y build-essential pkg-config qt6-base-dev qt6-base-dev-tools
+	sudo apt install -y build-essential pkg-config qtbase5-dev qt5-qmake qtbase5-dev-tools
 
 # ==========================
 # DIRETORIOS
@@ -28,8 +28,8 @@ BUILD_DIR = ./build-qt
 QT_CFLAGS = $(shell pkg-config --cflags $(QT_PACKAGES))
 QT_LIBS = $(shell pkg-config --libs $(QT_PACKAGES))
 
-UIC = $(shell command -v uic 2>/dev/null || find /usr/lib/qt6 -type f -name uic 2>/dev/null | head -n 1)
-MOC = $(shell command -v moc 2>/dev/null || find /usr/lib/qt6 -type f -name moc 2>/dev/null | head -n 1)
+UIC = $(shell command -v uic 2>/dev/null || find /usr/lib/qt5 -type f -name uic 2>/dev/null | head -n 1)
+MOC = $(shell command -v moc 2>/dev/null || find /usr/lib/qt5 -type f -name moc 2>/dev/null | head -n 1)
 
 CXXFLAGS += $(QT_CFLAGS) -I$(QT_DIR) -I$(BUILD_DIR)
 
