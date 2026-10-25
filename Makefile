@@ -3,7 +3,7 @@
 # CONFIGURACOES
 # ==========================
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -fPIC
+CXXFLAGS = -std=c++11 -Wall -Wextra -fPIC
 
 QT_PACKAGES = Qt6Widgets Qt6Sql
 
